@@ -35,14 +35,16 @@ struct Settings {
     muted: bool,
     collapsed: bool,
     theme: String,
+    selected_music: Option<String>,
 }
 
 impl Default for Settings {
     fn default() -> Self {
         Settings {
-            muted: false,
-            collapsed: false,
+            muted: true,
+            collapsed: false,  // Start expanded for now to see the full app
             theme: "dark".to_string(),
+            selected_music: None,
         }
     }
 }
@@ -134,15 +136,26 @@ async fn open_note_window(app: AppHandle) -> Result<(), String> {
 #[tauri::command]
 async fn toggle_window_size(window: WebviewWindow, collapsed: bool) -> Result<(), String> {
     if collapsed {
+        // Collapsed state - compact icon (60x60)
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 80,
-            height: 80,
+            width: 60,
+            height: 60,
         })).map_err(|e| e.to_string())?;
+        
+        // Hide from taskbar when collapsed
+        window.set_skip_taskbar(true).map_err(|e| e.to_string())?;
     } else {
+        // Expanded state - compact widget (360x480)
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 380,
-            height: 620,
+            width: 360,
+            height: 480,
         })).map_err(|e| e.to_string())?;
+        
+        // Show in taskbar when expanded
+        window.set_skip_taskbar(false).map_err(|e| e.to_string())?;
+        
+        // Center the window when expanding
+        window.center().map_err(|e| e.to_string())?;
     }
     Ok(())
 }
@@ -173,10 +186,8 @@ fn main() {
             // Initialize store for persistence
             let _store = StoreBuilder::new(app.handle(), "waffle_timer.bin").build();
             
-            let _window = app.get_webview_window("main").unwrap();
-            
-            // The window dragging is handled via CSS with -webkit-app-region: drag
-            // in the frontend components (see FloatingWidget.tsx header)
+            // The window starts at 420x560 (expanded) as configured in tauri.conf.json
+            // The frontend will handle showing collapsed/expanded based on settings
             
             Ok(())
         })
