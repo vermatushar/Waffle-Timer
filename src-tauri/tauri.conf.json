@@ -14,11 +14,11 @@
     "windows": [
       {
         "label": "main",
-        "title": "Waffle Timer",
-        "width": 380,
-        "height": 620,
-        "minWidth": 380,
-        "minHeight": 620,
+        "title": "Focus Timer",
+        "width": 360,
+        "height": 480,
+        "minWidth": 60,
+        "minHeight": 60,
         "resizable": false,
         "fullscreen": false,
         "alwaysOnTop": true,
@@ -29,7 +29,9 @@
         "visible": true,
         "hiddenTitle": true,
         "acceptFirstMouse": true,
-        "tabbingIdentifier": "waffle-timer"
+        "shadow": false,
+        "tabbingIdentifier": "focus-timer",
+        "titleBarStyle": "Transparent"
       }
     ],
     "security": {

@@ -4,16 +4,21 @@ interface Settings {
   muted: boolean;
   collapsed: boolean;
   theme: string;
+  selectedMusic: string | null;
 }
 
 interface UiStore {
   collapsed: boolean;
   muted: boolean;
   theme: string;
+  selectedMusic: string | null;
   
   // Actions
-  toggleCollapse: () => Promise<void>;
+  collapse: () => void;
+  expand: () => void;
+  toggle: () => void;
   toggleMute: () => void;
+  setSelectedMusic: (music: string | null) => void;
   loadSettings: () => Promise<void>;
   saveSettings: () => Promise<void>;
 }
@@ -31,7 +36,12 @@ const useTauriOrFallback = async (command: string, args?: any) => {
   switch (command) {
     case 'get_settings': {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : { muted: false, collapsed: false, theme: 'dark' };
+      return stored ? JSON.parse(stored) : { 
+        muted: true, // Default muted
+        collapsed: false, // Default expanded to see the app
+        theme: 'dark',
+        selectedMusic: null 
+      };
     }
     
     case 'save_settings': {
@@ -51,19 +61,37 @@ const useTauriOrFallback = async (command: string, args?: any) => {
 };
 
 export const useUiStore = create<UiStore>((set, get) => ({
-  collapsed: false,
-  muted: false,
+  collapsed: false, // Default to expanded to see the app properly
+  muted: true, // Default muted
   theme: 'dark',
+  selectedMusic: null,
 
-  toggleCollapse: async () => {
-    const newCollapsed = !get().collapsed;
-    set({ collapsed: newCollapsed });
-    
+  collapse: async () => {
+    set({ collapsed: true });
     try {
-      await useTauriOrFallback('toggle_window_size', { collapsed: newCollapsed });
+      await useTauriOrFallback('toggle_window_size', { collapsed: true });
       await get().saveSettings();
     } catch (error) {
-      console.error('Failed to toggle window size:', error);
+      console.error('Failed to collapse window:', error);
+    }
+  },
+
+  expand: async () => {
+    set({ collapsed: false });
+    try {
+      await useTauriOrFallback('toggle_window_size', { collapsed: false });
+      await get().saveSettings();
+    } catch (error) {
+      console.error('Failed to expand window:', error);
+    }
+  },
+
+  toggle: async () => {
+    const newCollapsed = !get().collapsed;
+    if (newCollapsed) {
+      await get().collapse();
+    } else {
+      await get().expand();
     }
   },
 
@@ -72,13 +100,19 @@ export const useUiStore = create<UiStore>((set, get) => ({
     get().saveSettings();
   },
 
+  setSelectedMusic: (music: string | null) => {
+    set({ selectedMusic: music });
+    get().saveSettings();
+  },
+
   loadSettings: async () => {
     try {
       const settings = await useTauriOrFallback('get_settings') as Settings;
       set({
-        muted: settings.muted,
-        collapsed: settings.collapsed,
-        theme: settings.theme
+        muted: settings.muted ?? true,
+        collapsed: settings.collapsed ?? false,
+        theme: settings.theme ?? 'dark',
+        selectedMusic: settings.selectedMusic ?? null
       });
     } catch (error) {
       console.error('Failed to load settings:', error);
@@ -86,10 +120,10 @@ export const useUiStore = create<UiStore>((set, get) => ({
   },
 
   saveSettings: async () => {
-    const { muted, collapsed, theme } = get();
+    const { muted, collapsed, theme, selectedMusic } = get();
     try {
       await useTauriOrFallback('save_settings', {
-        settings: { muted, collapsed, theme }
+        settings: { muted, collapsed, theme, selectedMusic }
       });
     } catch (error) {
       console.error('Failed to save settings:', error);
