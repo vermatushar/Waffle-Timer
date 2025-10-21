@@ -4,7 +4,7 @@ import './styles.css';
 
 function App() {
   return (
-    <div className="w-full h-full">
+    <div className="h-screen w-screen bg-transparent overflow-hidden antialiased">
       <FloatingWidget />
     </div>
   );

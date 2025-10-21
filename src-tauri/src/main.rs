@@ -135,13 +135,13 @@ async fn open_note_window(app: AppHandle) -> Result<(), String> {
 async fn toggle_window_size(window: WebviewWindow, collapsed: bool) -> Result<(), String> {
     if collapsed {
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 72,
-            height: 72,
+            width: 80,
+            height: 80,
         })).map_err(|e| e.to_string())?;
     } else {
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 420,
-            height: 580,
+            width: 380,
+            height: 620,
         })).map_err(|e| e.to_string())?;
     }
     Ok(())
@@ -172,8 +172,11 @@ fn main() {
         .setup(|app| {
             // Initialize store for persistence
             let _store = StoreBuilder::new(app.handle(), "waffle_timer.bin").build();
-
+            
             let _window = app.get_webview_window("main").unwrap();
+            
+            // The window dragging is handled via CSS with -webkit-app-region: drag
+            // in the frontend components (see FloatingWidget.tsx header)
             
             Ok(())
         })
