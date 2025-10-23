@@ -62,47 +62,47 @@ export const TimerCard: React.FC = () => {
   };
 
   const progress = 1 - (remaining / duration);
-  const circumference = 2 * Math.PI * 45; // Smaller radius
+  const circumference = 2 * Math.PI * 40; // Even smaller radius for compact design
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
     <div className="relative rounded-xl 
-                    bg-white/5 backdrop-blur-lg
-                    border border-white/10
+                    bg-white/[0.02] backdrop-blur-lg
+                    border border-white/5
                     shadow-lg
-                    p-3 transition-all duration-300 hover:bg-white/8">
+                    p-2.5 transition-all duration-300 hover:bg-white/[0.04]">
       
       {/* Collapse button - top right of timer card */}
       <button
         onClick={collapse}
-        className="absolute top-2 right-2 w-6 h-6 rounded-lg
-                   bg-white/5 hover:bg-white/10 
+        className="absolute top-1.5 right-1.5 w-5 h-5 rounded-lg
+                   bg-white/[0.03] hover:bg-white/[0.06] 
                    flex items-center justify-center
                    transition-all duration-300 no-drag z-10
                    hover:scale-110"
         aria-label="Collapse to icon"
         title="Minimize"
       >
-        <ChevronDown className="w-3 h-3 text-white/50" />
+        <ChevronDown className="w-2.5 h-2.5 text-white/40" />
       </button>
 
       <div className="flex items-center justify-between gap-3">
         {/* Timer Circle and Time */}
         <div className="flex items-center">
-          <div className="relative">
-            <svg className="transform -rotate-90 w-24 h-24"> {/* Smaller size */}
-              <circle
-                cx="48"
-                cy="48"
-                r="45"
+                <div className="relative">
+                  <svg className="transform -rotate-90 w-20 h-20"> {/* Even smaller size */}
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="40"
                 stroke="rgba(255, 255, 255, 0.03)"
                 strokeWidth="2.5"
                 fill="none"
               />
               <circle
-                cx="48"
-                cy="48"
-                r="45"
+                cx="40"
+                cy="40"
+                r="40"
                 stroke="url(#timer-gradient)"
                 strokeWidth="2.5"
                 fill="none"
@@ -122,11 +122,11 @@ export const TimerCard: React.FC = () => {
               </defs>
             </svg>
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="font-mono text-2xl font-semibold text-white/90 tabular-nums"> {/* Smaller font */}
-                {formatTime(remaining)}
-              </div>
-              <div className="text-[9px] text-white/40 uppercase tracking-wider">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="font-mono text-xl font-semibold text-white/90 tabular-nums"> {/* Compact font */}
+                      {formatTime(remaining)}
+                    </div>
+                    <div className="text-[8px] text-white/40 uppercase tracking-wider">
                 {state === 'idle' ? 'Ready' : 
                  state === 'running' ? 'Focus' : 
                  state === 'paused' ? 'Paused' : 
@@ -140,35 +140,35 @@ export const TimerCard: React.FC = () => {
         <div className="flex flex-col gap-1.5">
           {/* Play/Pause and Reset */}
           <div className="flex gap-1.5">
-            {state === 'running' ? (
-              <button
-                onClick={pause}
-                className="w-9 h-9 rounded-lg bg-amber-500/15 hover:bg-amber-500/25
-                         flex items-center justify-center transition-all duration-300
-                         active:scale-95 no-drag hover:scale-105"
-                aria-label="Pause"
-                tabIndex={1}
-              >
-                <Pause className="w-3.5 h-3.5 text-amber-400/90" />
-              </button>
-            ) : (
-              <button
-                onClick={start}
-                className="w-9 h-9 rounded-lg bg-amber-500/15 hover:bg-amber-500/25
-                         flex items-center justify-center transition-all duration-300
-                         active:scale-95 no-drag hover:scale-105"
-                aria-label="Start"
-                tabIndex={1}
-              >
-                <Play className="w-3.5 h-3.5 text-amber-400/90 ml-0.5" />
-              </button>
-            )}
+                    {state === 'running' ? (
+                      <button
+                        onClick={pause}
+                        className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20
+                                 flex items-center justify-center transition-all duration-300
+                                 active:scale-95 no-drag hover:scale-105"
+                        aria-label="Pause"
+                        tabIndex={1}
+                      >
+                        <Pause className="w-3 h-3 text-amber-400/80" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={start}
+                        className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20
+                                 flex items-center justify-center transition-all duration-300
+                                 active:scale-95 no-drag hover:scale-105"
+                        aria-label="Start"
+                        tabIndex={1}
+                      >
+                        <Play className="w-3 h-3 text-amber-400/80 ml-0.5" />
+                      </button>
+                    )}
 
-            <button
-              onClick={reset}
-              className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10
-                       flex items-center justify-center transition-all duration-300
-                       active:scale-95 no-drag hover:scale-105"
+                    <button
+                      onClick={reset}
+                      className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
+                               flex items-center justify-center transition-all duration-300
+                               active:scale-95 no-drag hover:scale-105"
               aria-label="Reset"
               tabIndex={2}
             >
@@ -180,34 +180,34 @@ export const TimerCard: React.FC = () => {
           <div className="flex gap-1.5 relative">
             <button
               onClick={toggleMute}
-              className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10
+              className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 no-drag hover:scale-105"
               aria-label={muted ? "Unmute" : "Mute"}
               tabIndex={3}
             >
               {muted ? (
-                <VolumeX className="w-3 h-3 text-white/50" />
+                <VolumeX className="w-2.5 h-2.5 text-white/40" />
               ) : (
-                <Volume2 className="w-3 h-3 text-white/50" />
+                <Volume2 className="w-2.5 h-2.5 text-white/40" />
               )}
             </button>
 
             <button
               onClick={() => setShowMusicMenu(!showMusicMenu)}
-              className={`w-9 h-9 rounded-lg flex items-center justify-center 
+              className={`w-8 h-8 rounded-lg flex items-center justify-center 
                        transition-all duration-300 active:scale-95 no-drag hover:scale-105
-                       ${selectedMusic ? 'bg-amber-500/15 hover:bg-amber-500/25' : 'bg-white/5 hover:bg-white/10'}`}
+                       ${selectedMusic ? 'bg-amber-500/10 hover:bg-amber-500/20' : 'bg-white/[0.03] hover:bg-white/[0.06]'}`}
               aria-label="Music"
               tabIndex={4}
             >
-              <Music className={`w-3 h-3 ${selectedMusic ? 'text-amber-400/90' : 'text-white/50'}`} />
+              <Music className={`w-2.5 h-2.5 ${selectedMusic ? 'text-amber-400/80' : 'text-white/40'}`} />
             </button>
 
             {/* Music Popover */}
             {showMusicMenu && (
               <div className="absolute bottom-full right-0 mb-1 w-28 rounded-lg
-                            bg-gray-800/80 backdrop-blur-2xl border border-white/10
+                            bg-black/80 backdrop-blur-2xl border border-white/10
                             shadow-2xl p-1.5 z-50 animate-fadeIn">
                 <div className="text-[9px] text-white/50 px-2 py-0.5">Ambient</div>
                 {AMBIENT_TRACKS.map(track => (

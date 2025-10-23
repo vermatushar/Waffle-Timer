@@ -15,11 +15,11 @@
       {
         "label": "main",
         "title": "Focus Timer",
-        "width": 360,
-        "height": 480,
+        "width": 280,
+        "height": 370,
         "minWidth": 60,
         "minHeight": 60,
-        "resizable": false,
+        "resizable": true,
         "fullscreen": false,
         "alwaysOnTop": true,
         "decorations": false,
@@ -29,7 +29,7 @@
         "visible": true,
         "hiddenTitle": true,
         "acceptFirstMouse": true,
-        "shadow": false,
+        "shadow": true,
         "tabbingIdentifier": "focus-timer",
         "titleBarStyle": "Transparent"
       }
@@ -52,7 +52,7 @@
     "copyright": "© 2025 Waffle Timer",
     "category": "Productivity",
     "shortDescription": "Floating Pomodoro timer with todos",
-    "longDescription": "A beautiful floating widget for Pomodoro timing, to-do management, and sticky notes."
+    "longDescription": "Aint got no ducks to give"
   },
   "plugins": {}
 }
