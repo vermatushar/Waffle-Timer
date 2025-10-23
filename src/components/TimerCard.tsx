@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Music, ChevronDown } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Music, Lightbulb } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { useUiStore } from '../store/useUiStore';
+import { useThinkTankStore } from '../store/useThinkTankStore';
+import { DuckAvatar } from './DuckAvatar';
 
 const AMBIENT_TRACKS = [
   { id: 'rain', name: 'Rain', url: '/sounds/rain.mp3' },
@@ -11,7 +13,8 @@ const AMBIENT_TRACKS = [
 
 export const TimerCard: React.FC = () => {
   const { duration, remaining, state, start, pause, reset, tick } = useTimerStore();
-  const { muted, selectedMusic, toggleMute, setSelectedMusic, collapse } = useUiStore();
+  const { muted, selectedMusic, toggleMute, setSelectedMusic } = useUiStore();
+  const { toggleThinkTank } = useThinkTankStore();
   const [showMusicMenu, setShowMusicMenu] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -62,7 +65,7 @@ export const TimerCard: React.FC = () => {
   };
 
   const progress = 1 - (remaining / duration);
-  const circumference = 2 * Math.PI * 40; // Even smaller radius for compact design
+  const circumference = 2 * Math.PI * 42; // Radius for 90px timer
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
@@ -70,166 +73,147 @@ export const TimerCard: React.FC = () => {
                     bg-white/[0.02] backdrop-blur-lg
                     border border-white/5
                     shadow-lg
-                    p-2.5 transition-all duration-300 hover:bg-white/[0.04]">
+                    p-3 transition-all duration-300 hover:bg-white/[0.04]">
       
-      {/* Collapse button - top right of timer card */}
-      <button
-        onClick={collapse}
-        className="absolute top-1.5 right-1.5 w-5 h-5 rounded-lg
-                   bg-white/[0.03] hover:bg-white/[0.06] 
-                   flex items-center justify-center
-                   transition-all duration-300 no-drag z-10
-                   hover:scale-110"
-        aria-label="Collapse to icon"
-        title="Minimize"
-      >
-        <ChevronDown className="w-2.5 h-2.5 text-white/40" />
-      </button>
+      <div className="grid grid-cols-[1fr,auto,1fr] items-center justify-items-center gap-2">
+        {/* LEFT: Timer Display */}
+        <div className="flex flex-col items-center gap-2">
+          <div className="timer-display text-[18px] text-white/90 tracking-wide tabular-nums"
+               style={{ 
+                 fontFamily: "'DM Mono', 'SF Mono', 'Monaco', monospace",
+                 fontWeight: 300,
+                 letterSpacing: '0.04em'
+               }}>
+            {formatTime(remaining)}
+          </div>
+          
+          {/* Play/Pause button below timer */}
+          {state === 'running' ? (
+            <button
+              onClick={pause}
+              className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
+                       flex items-center justify-center transition-all duration-300
+                       active:scale-95 hover:scale-105
+                       border border-amber-500/20 hover:border-amber-500/30 no-drag"
+              aria-label="Pause"
+              tabIndex={1}
+            >
+              <Pause className="w-3 h-3 text-amber-400" />
+            </button>
+          ) : (
+            <button
+              onClick={start}
+              className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
+                       flex items-center justify-center transition-all duration-300
+                       active:scale-95 hover:scale-105
+                       border border-amber-500/20 hover:border-amber-500/30 no-drag"
+              aria-label="Start"
+              tabIndex={1}
+            >
+              <Play className="w-3 h-3 text-amber-400 ml-0.5" />
+            </button>
+          )}
+        </div>
 
-      <div className="flex items-center justify-between gap-3">
-        {/* Timer Circle and Time */}
-        <div className="flex items-center">
-                <div className="relative">
-                  <svg className="transform -rotate-90 w-20 h-20"> {/* Even smaller size */}
-                    <circle
-                      cx="40"
-                      cy="40"
-                      r="40"
-                stroke="rgba(255, 255, 255, 0.03)"
-                strokeWidth="2.5"
-                fill="none"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="40"
-                stroke="url(#timer-gradient)"
-                strokeWidth="2.5"
-                fill="none"
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
-                className="transition-all duration-500 ease-out"
-                style={{
-                  filter: state === 'running' ? 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.5))' : 'none'
-                }}
-              />
-              <defs>
-                <linearGradient id="timer-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.9" />
-                </linearGradient>
-              </defs>
-            </svg>
+        {/* CENTER: Controls Section - 2x2 Grid */}
+        <div className="flex items-center justify-center no-drag">
+          <div className="grid grid-cols-2 gap-2">
+            {/* Think Tank Button - Top Left */}
+            <button
+              onClick={toggleThinkTank}
+              className="w-[30px] h-[30px] rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
+                       flex items-center justify-center transition-all duration-300
+                       active:scale-95 hover:scale-105"
+              aria-label="Think Tank"
+              tabIndex={2}
+              title="Think Tank - Capture ideas"
+            >
+              <Lightbulb className="w-3.5 h-3.5 text-white/50 hover:text-white/70" />
+            </button>
+            
+            {/* Reset Button - Top Right */}
+            <button
+              onClick={reset}
+              className="w-[30px] h-[30px] rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
+                       flex items-center justify-center transition-all duration-300
+                       active:scale-95 hover:scale-105"
+              aria-label="Reset"
+              tabIndex={3}
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-white/50" />
+            </button>
 
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="font-mono text-xl font-semibold text-white/90 tabular-nums"> {/* Compact font */}
-                      {formatTime(remaining)}
-                    </div>
-                    <div className="text-[8px] text-white/40 uppercase tracking-wider">
-                {state === 'idle' ? 'Ready' : 
-                 state === 'running' ? 'Focus' : 
-                 state === 'paused' ? 'Paused' : 
-                 'Complete'}
-              </div>
+            {/* Sound Button - Bottom Left */}
+            <button
+              onClick={async () => {
+                // Try to open system sound settings
+                try {
+                  if (window.__TAURI__) {
+                    const { open } = await import('@tauri-apps/plugin-opener');
+                    // macOS specific URL to open sound preferences
+                    await open('x-apple.systempreferences:com.apple.preference.sound');
+                  } else {
+                    // Fallback to toggle mute in browser
+                    toggleMute();
+                  }
+                } catch (error) {
+                  console.error('Failed to open sound settings:', error);
+                  toggleMute(); // Fallback to toggle mute
+                }
+              }}
+              className="w-[30px] h-[30px] rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
+                       flex items-center justify-center transition-all duration-300
+                       active:scale-95 hover:scale-105"
+              aria-label="Sound Settings"
+              tabIndex={4}
+              title="Open Sound Settings"
+            >
+              <Volume2 className="w-3.5 h-3.5 text-white/40" />
+            </button>
+
+            {/* Music Button - Bottom Right */}
+            <div className="relative">
+              <button
+                onClick={() => setShowMusicMenu(!showMusicMenu)}
+                className={`w-[30px] h-[30px] rounded-lg flex items-center justify-center 
+                         transition-all duration-300 active:scale-95 hover:scale-105
+                         ${selectedMusic ? 'bg-amber-500/10 hover:bg-amber-500/20' : 'bg-white/[0.03] hover:bg-white/[0.06]'}`}
+                aria-label="Music"
+                tabIndex={5}
+              >
+                <Music className={`w-3.5 h-3.5 ${selectedMusic ? 'text-amber-400/80' : 'text-white/40'}`} />
+            </button>
+
+              {/* Music Popover */}
+              {showMusicMenu && (
+                <div className="absolute bottom-full right-0 mb-1 w-28 rounded-lg
+                              bg-black/80 backdrop-blur-2xl border border-white/10
+                              shadow-2xl p-1.5 z-50 animate-fadeIn">
+                  <div className="text-[9px] text-white/50 px-2 py-0.5">Ambient</div>
+                  {AMBIENT_TRACKS.map(track => (
+                    <button
+                      key={track.id}
+                      onClick={() => {
+                        setSelectedMusic(selectedMusic === track.id ? null : track.id);
+                        setShowMusicMenu(false);
+                      }}
+                      className={`w-full text-left px-2 py-1 rounded text-[11px]
+                                transition-all duration-200 no-drag
+                                ${selectedMusic === track.id 
+                                  ? 'bg-amber-500/20 text-amber-400' 
+                                  : 'text-white/60 hover:bg-white/10'}`}
+                    >
+                      {track.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Controls Section - More Compact */}
-        <div className="flex flex-col gap-1.5">
-          {/* Play/Pause and Reset */}
-          <div className="flex gap-1.5">
-                    {state === 'running' ? (
-                      <button
-                        onClick={pause}
-                        className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20
-                                 flex items-center justify-center transition-all duration-300
-                                 active:scale-95 no-drag hover:scale-105"
-                        aria-label="Pause"
-                        tabIndex={1}
-                      >
-                        <Pause className="w-3 h-3 text-amber-400/80" />
-                      </button>
-                    ) : (
-                      <button
-                        onClick={start}
-                        className="w-8 h-8 rounded-lg bg-amber-500/10 hover:bg-amber-500/20
-                                 flex items-center justify-center transition-all duration-300
-                                 active:scale-95 no-drag hover:scale-105"
-                        aria-label="Start"
-                        tabIndex={1}
-                      >
-                        <Play className="w-3 h-3 text-amber-400/80 ml-0.5" />
-                      </button>
-                    )}
-
-                    <button
-                      onClick={reset}
-                      className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
-                               flex items-center justify-center transition-all duration-300
-                               active:scale-95 no-drag hover:scale-105"
-              aria-label="Reset"
-              tabIndex={2}
-            >
-              <RotateCcw className="w-3 h-3 text-white/50" />
-            </button>
-          </div>
-
-          {/* Sound and Music Controls */}
-          <div className="flex gap-1.5 relative">
-            <button
-              onClick={toggleMute}
-              className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
-                       flex items-center justify-center transition-all duration-300
-                       active:scale-95 no-drag hover:scale-105"
-              aria-label={muted ? "Unmute" : "Mute"}
-              tabIndex={3}
-            >
-              {muted ? (
-                <VolumeX className="w-2.5 h-2.5 text-white/40" />
-              ) : (
-                <Volume2 className="w-2.5 h-2.5 text-white/40" />
-              )}
-            </button>
-
-            <button
-              onClick={() => setShowMusicMenu(!showMusicMenu)}
-              className={`w-8 h-8 rounded-lg flex items-center justify-center 
-                       transition-all duration-300 active:scale-95 no-drag hover:scale-105
-                       ${selectedMusic ? 'bg-amber-500/10 hover:bg-amber-500/20' : 'bg-white/[0.03] hover:bg-white/[0.06]'}`}
-              aria-label="Music"
-              tabIndex={4}
-            >
-              <Music className={`w-2.5 h-2.5 ${selectedMusic ? 'text-amber-400/80' : 'text-white/40'}`} />
-            </button>
-
-            {/* Music Popover */}
-            {showMusicMenu && (
-              <div className="absolute bottom-full right-0 mb-1 w-28 rounded-lg
-                            bg-black/80 backdrop-blur-2xl border border-white/10
-                            shadow-2xl p-1.5 z-50 animate-fadeIn">
-                <div className="text-[9px] text-white/50 px-2 py-0.5">Ambient</div>
-                {AMBIENT_TRACKS.map(track => (
-                  <button
-                    key={track.id}
-                    onClick={() => {
-                      setSelectedMusic(selectedMusic === track.id ? null : track.id);
-                      setShowMusicMenu(false);
-                    }}
-                    className={`w-full text-left px-2 py-1 rounded text-[11px]
-                              transition-all duration-200 no-drag
-                              ${selectedMusic === track.id 
-                                ? 'bg-amber-500/20 text-amber-400' 
-                                : 'text-white/60 hover:bg-white/10'}`}
-                  >
-                    {track.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+        
+        {/* RIGHT: Duck Avatar with Progress Circle */}
+        <DuckAvatar progress={progress} state={state} />
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,6 +113,22 @@
   .animation-delay-300 {
     animation-delay: 300ms;
   }
+  
+  /* Duck avatar animations */
+  @media (prefers-reduced-motion: no-preference) {
+    .duck-bob {
+      animation: duckBob 2.5s ease-in-out infinite;
+    }
+  }
+  
+  .duck-glow {
+    background: radial-gradient(40% 40% at 50% 50%, rgba(255, 255, 255, 0.25), transparent 60%);
+  }
+  
+  /* Timer display styling */
+  .timer-display {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
 
   @keyframes fadeIn {
     from {
@@ -140,6 +158,15 @@
     to {
       opacity: 1;
       transform: scale(1);
+    }
+  }
+  
+  @keyframes duckBob {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
     }
   }
   

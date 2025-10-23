@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useDuckStore } from './useDuckStore';
 
 export type TimerState = 'idle' | 'running' | 'paused' | 'completed';
 
@@ -8,6 +9,8 @@ interface TimerStore {
   remaining: number; // Remaining time in seconds
   state: TimerState;
   lastTick: number | null;
+  elapsedTime: number; // Track elapsed time for milestones
+  duckChangedAtMilestone: boolean; // Track if duck was changed at 25 min milestone
   
   // Actions
   start: () => void;
@@ -25,6 +28,8 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
   remaining: DEFAULT_DURATION,
   state: 'idle',
   lastTick: null,
+  elapsedTime: 0,
+  duckChangedAtMilestone: false,
 
   start: () => {
     const state = get().state;
@@ -48,12 +53,16 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
     set({
       remaining: duration,
       state: 'idle',
-      lastTick: null
+      lastTick: null,
+      elapsedTime: 0,
+      duckChangedAtMilestone: false
     });
+    // Reset duck to first image
+    useDuckStore.getState().resetDuck();
   },
 
   tick: () => {
-    const { state, remaining, lastTick } = get();
+    const { state, remaining, lastTick, elapsedTime, duckChangedAtMilestone } = get();
     
     if (state !== 'running' || !lastTick) return;
     
@@ -62,13 +71,21 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
     
     if (elapsed >= 1) {
       const newRemaining = Math.max(0, remaining - elapsed);
+      const newElapsedTime = elapsedTime + elapsed;
+      
+      // Check for 25-minute milestone (1500 seconds)
+      if (newElapsedTime >= 1500 && !duckChangedAtMilestone) {
+        useDuckStore.getState().nextDuck();
+        set({ duckChangedAtMilestone: true });
+      }
       
       if (newRemaining === 0) {
         get().complete();
       } else {
         set({
           remaining: newRemaining,
-          lastTick: now
+          lastTick: now,
+          elapsedTime: newElapsedTime
         });
       }
     }
@@ -79,7 +96,9 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
       duration: seconds,
       remaining: seconds,
       state: 'idle',
-      lastTick: null
+      lastTick: null,
+      elapsedTime: 0,
+      duckChangedAtMilestone: false
     });
   },
 
@@ -88,6 +107,9 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
       state: 'completed',
       remaining: 0
     });
+    
+    // Change duck on completion
+    useDuckStore.getState().nextDuck();
     
     // Play completion sound
     const audio = new Audio('/chime.mp3');

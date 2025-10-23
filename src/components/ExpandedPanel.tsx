@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TimerCard } from './TimerCard';
 import { TodoList } from './TodoList';
+import { ThinkTank } from './ThinkTank';
 
 export const ExpandedPanel: React.FC = () => {
   const [showStickyNote, setShowStickyNote] = useState(false);
@@ -26,7 +27,7 @@ export const ExpandedPanel: React.FC = () => {
                       before:pointer-events-none">
         
         {/* Content Container */}
-        <div className="h-full flex flex-col p-2.5 pt-3 no-drag">
+        <div className="h-full flex flex-col p-2 no-drag">
           {/* Todo Section - Top */}
           <div className="flex-1 min-h-0 mb-1.5 overflow-hidden animate-slideUp">
             <TodoList 
@@ -50,6 +51,9 @@ export const ExpandedPanel: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Think Tank Overlay */}
+      <ThinkTank />
     </div>
   );
 };
