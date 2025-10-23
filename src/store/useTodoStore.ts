@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useDuckStore } from './useDuckStore';
 
 export interface TodoItem {
   id: string;
@@ -113,6 +114,11 @@ export const useTodoStore = create<TodoStore>((set) => ({
           todo.id === id ? updatedTodo : todo
         )
       }));
+      
+      // If todo was just completed (marked as done), show completion duck
+      if (updatedTodo.done) {
+        useDuckStore.getState().showCompletionDuck();
+      }
     } catch (error) {
       console.error('Failed to toggle todo:', error);
     }
