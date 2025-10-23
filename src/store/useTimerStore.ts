@@ -108,8 +108,8 @@ export const useTimerStore = create<TimerStore>((set, get) => ({
       remaining: 0
     });
     
-    // Change duck on completion
-    useDuckStore.getState().nextDuck();
+    // Show timer completion duck (peck.png)
+    useDuckStore.getState().showTimerCompletionDuck();
     
     // Play completion sound
     const audio = new Audio('/chime.mp3');

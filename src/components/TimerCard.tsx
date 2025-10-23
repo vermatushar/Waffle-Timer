@@ -4,6 +4,7 @@ import { useTimerStore } from '../store/useTimerStore';
 import { useUiStore } from '../store/useUiStore';
 import { useThinkTankStore } from '../store/useThinkTankStore';
 import { DuckAvatar } from './DuckAvatar';
+import { playClickSound } from '../utils/soundUtils';
 
 const AMBIENT_TRACKS = [
   { id: 'rain', name: 'Rain', url: '/sounds/rain.mp3' },
@@ -73,7 +74,10 @@ export const TimerCard: React.FC = () => {
           {/* Play/Pause button below timer */}
           {state === 'running' ? (
             <button
-              onClick={pause}
+              onClick={() => {
+                playClickSound();
+                pause();
+              }}
               className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105
@@ -85,7 +89,10 @@ export const TimerCard: React.FC = () => {
             </button>
           ) : (
             <button
-              onClick={start}
+              onClick={() => {
+                playClickSound();
+                start();
+              }}
               className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105
@@ -103,7 +110,10 @@ export const TimerCard: React.FC = () => {
           <div className="grid grid-cols-2 gap-2">
             {/* Think Tank Button - Top Left */}
             <button
-              onClick={toggleThinkTank}
+              onClick={() => {
+                playClickSound();
+                toggleThinkTank();
+              }}
               className="w-[30px] h-[30px] rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105"
@@ -116,7 +126,10 @@ export const TimerCard: React.FC = () => {
             
             {/* Reset Button - Top Right */}
             <button
-              onClick={reset}
+              onClick={() => {
+                playClickSound();
+                reset();
+              }}
               className="w-[30px] h-[30px] rounded-lg bg-white/[0.03] hover:bg-white/[0.06]
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105"
@@ -129,6 +142,7 @@ export const TimerCard: React.FC = () => {
             {/* Sound Button - Bottom Left */}
             <button
               onClick={async () => {
+                playClickSound();
                 // Try to open system sound settings
                 try {
                   if (window.__TAURI__) {
@@ -157,7 +171,10 @@ export const TimerCard: React.FC = () => {
             {/* Music Button - Bottom Right */}
             <div className="relative">
               <button
-                onClick={() => setShowMusicMenu(!showMusicMenu)}
+                onClick={() => {
+                  playClickSound();
+                  setShowMusicMenu(!showMusicMenu);
+                }}
                 className={`w-[30px] h-[30px] rounded-lg flex items-center justify-center 
                          transition-all duration-300 active:scale-95 hover:scale-105
                          ${selectedMusic ? 'bg-amber-500/10 hover:bg-amber-500/20' : 'bg-white/[0.03] hover:bg-white/[0.06]'}`}
@@ -177,6 +194,7 @@ export const TimerCard: React.FC = () => {
                     <button
                       key={track.id}
                       onClick={() => {
+                        playClickSound();
                         setSelectedMusic(selectedMusic === track.id ? null : track.id);
                         setShowMusicMenu(false);
                       }}

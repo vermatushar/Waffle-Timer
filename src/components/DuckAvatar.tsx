@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDuckStore } from '../store/useDuckStore';
 import { useUiStore } from '../store/useUiStore';
+import { playClickSound, playDuckHoverSound } from '../utils/soundUtils';
 
 interface DuckAvatarProps {
   progress?: number;
@@ -12,6 +13,7 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
   const { collapsed, expand, collapse } = useUiStore();
 
   const handleClick = async () => {
+    playClickSound();
     if (collapsed) {
       await expand();
     } else {
@@ -28,6 +30,7 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
       className="relative isolate rounded-full cursor-move"
       data-tauri-drag-region
       title="Drag to move window"
+      onMouseEnter={playDuckHoverSound}
     >
       {/* Progress Circle */}
       <svg className="absolute inset-0 transform -rotate-90 w-[96px] h-[96px] pointer-events-none">
@@ -81,7 +84,7 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
                      duck-bob pointer-events-none"
           onError={(e) => {
             console.error('Failed to load duck GIF:', currentUrl);
-            e.currentTarget.src = '/waffle-icon.png';
+            e.currentTarget.src = '/src/assets/ducks/DUC.gif';
           }}
           draggable={false}
         />

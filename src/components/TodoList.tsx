@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Plus, X, Circle, CheckCircle, StickyNote } from 'lucide-react';
 import { useTodoStore } from '../store/useTodoStore';
 import { clsx } from 'clsx';
+import { playClickSound } from '../utils/soundUtils';
 
 interface TodoListProps {
   showStickyNote?: boolean;
@@ -61,7 +62,10 @@ export const TodoList: React.FC<TodoListProps> = ({
         <div className="flex items-center gap-1 relative z-30">
           {onToggleStickyNote && (
             <button
-              onClick={onToggleStickyNote}
+              onClick={() => {
+                playClickSound();
+                onToggleStickyNote();
+              }}
               className={clsx(
                 "w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-30",
                 showStickyNote 
@@ -76,7 +80,10 @@ export const TodoList: React.FC<TodoListProps> = ({
             </button>
           )}
           <button
-            onClick={() => setIsAdding(true)}
+            onClick={() => {
+              playClickSound();
+              setIsAdding(true);
+            }}
             className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10
                      flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-30"
             aria-label="Add todo"
@@ -156,7 +163,10 @@ export const TodoList: React.FC<TodoListProps> = ({
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <button
-                  onClick={() => toggleTodo(todo.id)}
+                  onClick={() => {
+                    playClickSound();
+                    toggleTodo(todo.id);
+                  }}
                   className="flex-shrink-0 hover:scale-110 transition-transform duration-200 relative z-30"
                   aria-label={todo.done ? "Mark as incomplete" : "Mark as complete"}
                   style={{ pointerEvents: 'auto' }}
@@ -180,7 +190,10 @@ export const TodoList: React.FC<TodoListProps> = ({
                 </span>
 
                 <button
-                  onClick={() => deleteTodo(todo.id)}
+                  onClick={() => {
+                    playClickSound();
+                    deleteTodo(todo.id);
+                  }}
                   className="opacity-0 group-hover:opacity-100 w-5 h-5 rounded flex items-center justify-center 
                            hover:bg-white/10 transition-all duration-300 hover:scale-110 relative z-30"
                   aria-label="Delete"

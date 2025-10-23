@@ -1,8 +1,15 @@
 import { create } from 'zustand';
 
-// Dynamically import all GIF files from the ducks folder
-const modules = import.meta.glob('/src/assets/ducks/*.gif', { eager: true, query: '?url', import: 'default' });
-const DUCK_GIFS = Object.values(modules) as string[];
+// Import all GIF files from the ducks folder
+import cookGif from '/src/assets/ducks/cook.gif';
+import cryDuckGif from '/src/assets/ducks/CRY DUCK.gif';
+import duGif from '/src/assets/ducks/DU.gif';
+import ducGif from '/src/assets/ducks/DUC.gif';
+import gifGif from '/src/assets/ducks/GIF.gif';
+import napGif from '/src/assets/ducks/nap.gif';
+import peckPng from '/src/assets/ducks/peck.png';
+
+const DUCK_GIFS = [cookGif, cryDuckGif, duGif, ducGif, gifGif, napGif];
 
 interface DuckState {
   ducks: string[];
@@ -15,12 +22,13 @@ interface DuckState {
   getDuckUrl: () => string;
   showCompletionDuck: () => void;
   revertToRandomDuck: () => void;
+  showTimerCompletionDuck: () => void;
 }
 
 export const useDuckStore = create<DuckState>((set, get) => ({
-  ducks: DUCK_GIFS.length > 0 ? DUCK_GIFS : ['/src/assets/ducks/DUC.gif'], // Fallback to a default
-  currentIndex: 0,
-  currentUrl: DUCK_GIFS[0] || '/src/assets/ducks/DUC.gif',
+  ducks: DUCK_GIFS.length > 0 ? DUCK_GIFS : [cryDuckGif], // Fallback to CRY DUCK
+  currentIndex: 1, // Start with CRY DUCK.gif (index 1 in the array)
+  currentUrl: cryDuckGif, // Always start with CRY DUCK.gif
   isShowingCompletion: false,
   completionTimer: null,
   
@@ -35,9 +43,10 @@ export const useDuckStore = create<DuckState>((set, get) => ({
   
   resetDuck: () => {
     const { ducks } = get();
+    const cryDuckIndex = ducks.findIndex(duck => duck === cryDuckGif);
     set({ 
-      currentIndex: 0, 
-      currentUrl: ducks[0] || '/src/assets/ducks/DUC.gif'
+      currentIndex: cryDuckIndex >= 0 ? cryDuckIndex : 1, 
+      currentUrl: cryDuckGif
     });
   },
   
@@ -55,14 +64,14 @@ export const useDuckStore = create<DuckState>((set, get) => ({
     
     // Show the DUC.gif completion animation
     set({ 
-      currentUrl: '/src/assets/ducks/DUC.gif',
+      currentUrl: ducGif,
       isShowingCompletion: true 
     });
     
-    // Set timer to revert after 30 seconds
+    // Set timer to revert after 10 seconds
     const timer = setTimeout(() => {
       get().revertToRandomDuck();
-    }, 30000);
+    }, 10000);
     
     set({ completionTimer: timer });
   },
@@ -76,5 +85,27 @@ export const useDuckStore = create<DuckState>((set, get) => ({
       isShowingCompletion: false,
       completionTimer: null
     });
+  },
+
+  showTimerCompletionDuck: () => {
+    const { completionTimer } = get();
+    
+    // Clear any existing timer
+    if (completionTimer) {
+      clearTimeout(completionTimer);
+    }
+    
+    // Show the peck.png timer completion image
+    set({ 
+      currentUrl: peckPng,
+      isShowingCompletion: true 
+    });
+    
+    // Set timer to revert after 30 seconds
+    const timer = setTimeout(() => {
+      get().revertToRandomDuck();
+    }, 30000);
+    
+    set({ completionTimer: timer });
   }
 }));
