@@ -47,7 +47,7 @@ export const TodoList: React.FC<TodoListProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Header - Compact */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-2 relative z-20">
         <div>
           <h3 className="text-xs font-medium text-white/60">
             Today's Focus
@@ -58,18 +58,19 @@ export const TodoList: React.FC<TodoListProps> = ({
             </p>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 relative z-30">
           {onToggleStickyNote && (
             <button
               onClick={onToggleStickyNote}
               className={clsx(
-                "w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110",
+                "w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-30",
                 showStickyNote 
                   ? "bg-amber-500/15 text-amber-400/90" 
                   : "bg-white/5 hover:bg-white/10 text-white/40"
               )}
               aria-label="Toggle sticky note"
               tabIndex={5}
+              style={{ pointerEvents: 'auto' }}
             >
               <StickyNote className="w-3 h-3" />
             </button>
@@ -77,9 +78,10 @@ export const TodoList: React.FC<TodoListProps> = ({
           <button
             onClick={() => setIsAdding(true)}
             className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10
-                     flex items-center justify-center transition-all duration-300 hover:scale-110"
+                     flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-30"
             aria-label="Add todo"
             tabIndex={6}
+            style={{ pointerEvents: 'auto' }}
           >
             <Plus className="w-3 h-3 text-white/50" />
           </button>
@@ -155,8 +157,9 @@ export const TodoList: React.FC<TodoListProps> = ({
               >
                 <button
                   onClick={() => toggleTodo(todo.id)}
-                  className="flex-shrink-0 hover:scale-110 transition-transform duration-200"
+                  className="flex-shrink-0 hover:scale-110 transition-transform duration-200 relative z-30"
                   aria-label={todo.done ? "Mark as incomplete" : "Mark as complete"}
+                  style={{ pointerEvents: 'auto' }}
                 >
                   {todo.done ? (
                     <CheckCircle className="w-3.5 h-3.5 text-amber-500/80 fill-amber-500/15" />
@@ -179,8 +182,9 @@ export const TodoList: React.FC<TodoListProps> = ({
                 <button
                   onClick={() => deleteTodo(todo.id)}
                   className="opacity-0 group-hover:opacity-100 w-5 h-5 rounded flex items-center justify-center 
-                           hover:bg-white/10 transition-all duration-300 hover:scale-110"
+                           hover:bg-white/10 transition-all duration-300 hover:scale-110 relative z-30"
                   aria-label="Delete"
+                  style={{ pointerEvents: 'auto' }}
                 >
                   <X className="w-2.5 h-2.5 text-white/25" />
                 </button>

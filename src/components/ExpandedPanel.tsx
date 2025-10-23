@@ -26,11 +26,11 @@ export const ExpandedPanel: React.FC = () => {
                       before:bg-gradient-to-br before:from-white/[0.02] before:to-transparent
                       before:pointer-events-none">
         
-        {/* Draggable header area */}
-        <div className="absolute top-0 left-0 right-0 h-8 z-50" data-tauri-drag-region />
+        {/* Draggable header area - smaller and positioned to avoid button interference */}
+        <div className="absolute top-0 left-0 right-0 h-4 z-10" data-tauri-drag-region />
         
         {/* Content Container */}
-        <div className="h-full flex flex-col p-2">
+        <div className="h-full flex flex-col p-2 pt-6">
           {/* Todo Section - Top */}
           <div className="flex-1 min-h-0 mb-1.5 overflow-hidden animate-slideUp">
             <TodoList 
