@@ -7,7 +7,7 @@ import { ExpandedPanel } from './ExpandedPanel';
 export const FloatingWidget: React.FC = () => {
   const { collapsed, loadSettings } = useUiStore();
   const { state, tick } = useTimerStore();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
     loadSettings();

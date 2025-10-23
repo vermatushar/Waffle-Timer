@@ -25,7 +25,7 @@ export const ThinkTank: React.FC = () => {
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
       <div className="relative w-[250px] max-h-[320px] rounded-xl
                       bg-black/80 backdrop-blur-2xl border border-white/10
-                      shadow-2xl p-4 no-drag">
+                      shadow-2xl p-4">
         
         {/* Header */}
         <div className="flex items-center justify-between mb-3">

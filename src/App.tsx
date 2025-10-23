@@ -1,4 +1,3 @@
-import React from 'react';
 import { FloatingWidget } from './components/FloatingWidget';
 import './styles.css';
 

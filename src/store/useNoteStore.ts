@@ -54,7 +54,7 @@ const useTauriOrFallback = async (command: string, args?: any) => {
   }
 };
 
-export const useNoteStore = create<NoteStore>((set, get) => ({
+export const useNoteStore = create<NoteStore>((set) => ({
   notes: new Map(),
   activeNoteId: null,
 

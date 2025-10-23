@@ -63,7 +63,7 @@ export const TodoList: React.FC<TodoListProps> = ({
             <button
               onClick={onToggleStickyNote}
               className={clsx(
-                "w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 no-drag hover:scale-110",
+                "w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110",
                 showStickyNote 
                   ? "bg-amber-500/15 text-amber-400/90" 
                   : "bg-white/5 hover:bg-white/10 text-white/40"
@@ -77,7 +77,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           <button
             onClick={() => setIsAdding(true)}
             className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/10
-                     flex items-center justify-center transition-all duration-300 no-drag hover:scale-110"
+                     flex items-center justify-center transition-all duration-300 hover:scale-110"
             aria-label="Add todo"
             tabIndex={6}
           >
@@ -105,7 +105,7 @@ export const TodoList: React.FC<TodoListProps> = ({
             onChange={(e) => onStickyNoteChange?.(e.target.value)}
             placeholder="Quick notes..."
             className="w-full h-12 bg-transparent text-[11px] text-white/70 placeholder-white/25 
-                     resize-none outline-none no-drag"
+                     resize-none outline-none"
           />
         </div>
       )}
@@ -139,7 +139,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                     }
                   }}
                   placeholder="What needs to be done?"
-                  className="flex-1 bg-transparent text-xs text-white/80 placeholder-white/25 outline-none no-drag"
+                  className="flex-1 bg-transparent text-xs text-white/80 placeholder-white/25 outline-none"
                   autoFocus
                 />
               </div>
@@ -155,7 +155,7 @@ export const TodoList: React.FC<TodoListProps> = ({
               >
                 <button
                   onClick={() => toggleTodo(todo.id)}
-                  className="flex-shrink-0 no-drag hover:scale-110 transition-transform duration-200"
+                  className="flex-shrink-0 hover:scale-110 transition-transform duration-200"
                   aria-label={todo.done ? "Mark as incomplete" : "Mark as complete"}
                 >
                   {todo.done ? (
@@ -179,7 +179,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                 <button
                   onClick={() => deleteTodo(todo.id)}
                   className="opacity-0 group-hover:opacity-100 w-5 h-5 rounded flex items-center justify-center 
-                           hover:bg-white/10 transition-all duration-300 no-drag hover:scale-110"
+                           hover:bg-white/10 transition-all duration-300 hover:scale-110"
                   aria-label="Delete"
                 >
                   <X className="w-2.5 h-2.5 text-white/25" />

@@ -56,7 +56,7 @@ const useTauriOrFallback = async (command: string, args?: any) => {
     
     case 'toggle_todo': {
       const todos = getTodos();
-      const todo = todos.find(t => t.id === args.id);
+      const todo = todos.find((t: Todo) => t.id === args.id);
       if (todo) {
         todo.done = !todo.done;
         saveTodos(todos);
@@ -67,7 +67,7 @@ const useTauriOrFallback = async (command: string, args?: any) => {
     
     case 'delete_todo': {
       const todos = getTodos();
-      const filtered = todos.filter(t => t.id !== args.id);
+      const filtered = todos.filter((t: Todo) => t.id !== args.id);
       saveTodos(filtered);
       return;
     }
@@ -77,7 +77,7 @@ const useTauriOrFallback = async (command: string, args?: any) => {
   }
 };
 
-export const useTodoStore = create<TodoStore>((set, get) => ({
+export const useTodoStore = create<TodoStore>((set) => ({
   todos: [],
   loading: false,
 

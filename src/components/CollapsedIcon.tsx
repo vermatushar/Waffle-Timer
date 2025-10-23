@@ -9,10 +9,8 @@ export const CollapsedIcon: React.FC = () => {
   const progress = 1 - (remaining / duration);
 
   return (
-    <div className="w-full h-full flex items-center justify-center p-2 drag-region">
-      <div className="no-drag">
-        <DuckAvatar progress={progress} state={state} />
-      </div>
+    <div className="w-full h-full flex items-center justify-center p-2" data-tauri-drag-region>
+      <DuckAvatar progress={progress} state={state} />
     </div>
   );
 };

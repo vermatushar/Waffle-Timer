@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Mutex;
-use tauri::{AppHandle, Manager, WebviewWindow, WebviewWindowBuilder, WebviewUrl};
+use tauri::{AppHandle, WebviewWindow, WebviewWindowBuilder, WebviewUrl};
 use tauri_plugin_store::StoreBuilder;
 
 // Data structures

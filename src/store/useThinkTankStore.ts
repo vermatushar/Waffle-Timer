@@ -15,7 +15,7 @@ interface ThinkTankStore {
   closeThinkTank: () => void;
 }
 
-export const useThinkTankStore = create<ThinkTankStore>((set, get) => ({
+export const useThinkTankStore = create<ThinkTankStore>((set) => ({
   ideas: [],
   currentIdea: '',
   isOpen: false,

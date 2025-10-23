@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Music, Lightbulb } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, Music, Lightbulb } from 'lucide-react';
 import { useTimerStore } from '../store/useTimerStore';
 import { useUiStore } from '../store/useUiStore';
 import { useThinkTankStore } from '../store/useThinkTankStore';
@@ -50,8 +50,6 @@ export const TimerCard: React.FC = () => {
   };
 
   const progress = 1 - (remaining / duration);
-  const circumference = 2 * Math.PI * 42; // Radius for 90px timer
-  const strokeDashoffset = circumference - progress * circumference;
 
   return (
     <div className="relative rounded-xl 
@@ -79,7 +77,7 @@ export const TimerCard: React.FC = () => {
               className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105
-                       border border-amber-500/20 hover:border-amber-500/30 no-drag"
+                       border border-amber-500/20 hover:border-amber-500/30 "
               aria-label="Pause"
               tabIndex={1}
             >
@@ -91,7 +89,7 @@ export const TimerCard: React.FC = () => {
               className="w-8 h-8 rounded-full bg-amber-500/15 hover:bg-amber-500/25
                        flex items-center justify-center transition-all duration-300
                        active:scale-95 hover:scale-105
-                       border border-amber-500/20 hover:border-amber-500/30 no-drag"
+                       border border-amber-500/20 hover:border-amber-500/30 "
               aria-label="Start"
               tabIndex={1}
             >
@@ -101,7 +99,7 @@ export const TimerCard: React.FC = () => {
         </div>
 
         {/* CENTER: Controls Section - 2x2 Grid */}
-        <div className="flex items-center justify-center no-drag">
+        <div className="flex items-center justify-center ">
           <div className="grid grid-cols-2 gap-2">
             {/* Think Tank Button - Top Left */}
             <button
@@ -134,9 +132,9 @@ export const TimerCard: React.FC = () => {
                 // Try to open system sound settings
                 try {
                   if (window.__TAURI__) {
-                    const { open } = await import('@tauri-apps/plugin-opener');
+                    const { openUrl } = await import('@tauri-apps/plugin-opener');
                     // macOS specific URL to open sound preferences
-                    await open('x-apple.systempreferences:com.apple.preference.sound');
+                    await openUrl('x-apple.systempreferences:com.apple.preference.sound');
                   } else {
                     // Fallback to toggle mute in browser
                     toggleMute();
@@ -183,8 +181,7 @@ export const TimerCard: React.FC = () => {
                         setShowMusicMenu(false);
                       }}
                       className={`w-full text-left px-2 py-1 rounded text-[11px]
-                                transition-all duration-200 no-drag
-                                ${selectedMusic === track.id 
+                                transition-all duration-200                                 ${selectedMusic === track.id 
                                   ? 'bg-amber-500/20 text-amber-400' 
                                   : 'text-white/60 hover:bg-white/10'}`}
                     >

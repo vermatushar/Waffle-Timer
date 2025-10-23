@@ -24,19 +24,13 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
-    <button
-      onClick={handleClick}
-      className="group relative isolate rounded-full 
-                 bg-transparent hover:bg-white/5 
-                 transition-all duration-300 
-                 focus:outline-none focus:ring-2 focus:ring-white/40
-                 no-drag hover:scale-105 active:scale-95"
-      title={collapsed ? "Expand Waffle Timer" : "Minimize Waffle Timer"}
-      aria-label={collapsed ? "Expand Waffle Timer" : "Minimize Waffle Timer"}
-      tabIndex={10}
+    <div 
+      className="relative isolate rounded-full cursor-move"
+      data-tauri-drag-region
+      title="Drag to move window"
     >
       {/* Progress Circle */}
-      <svg className="absolute inset-0 transform -rotate-90 w-[96px] h-[96px]">
+      <svg className="absolute inset-0 transform -rotate-90 w-[96px] h-[96px] pointer-events-none">
         {/* Background circle */}
         <circle
           cx="48"
@@ -70,13 +64,16 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
         </defs>
       </svg>
       
-      {/* Glow effect on hover */}
-      <div className="pointer-events-none absolute inset-0 rounded-full 
-                      blur-md opacity-30 group-hover:opacity-50 
-                      duck-glow" />
-      
-      {/* Duck GIF */}
+      {/* Duck GIF with click handler */}
       <div className="relative w-[96px] h-[96px] flex items-center justify-center">
+        <button
+          onClick={handleClick}
+          className="absolute inset-0 m-auto w-16 h-16 rounded-full z-10
+                     bg-transparent
+                     focus:outline-none"
+          aria-label={collapsed ? "Expand Waffle Timer" : "Minimize Waffle Timer"}
+          tabIndex={10}
+        />
         <img
           src={currentUrl}
           alt="Duck avatar"
@@ -84,11 +81,11 @@ export const DuckAvatar: React.FC<DuckAvatarProps> = ({ progress = 0, state = 'i
                      duck-bob pointer-events-none"
           onError={(e) => {
             console.error('Failed to load duck GIF:', currentUrl);
-            // Fallback to a placeholder if the GIF fails to load
             e.currentTarget.src = '/waffle-icon.png';
           }}
+          draggable={false}
         />
       </div>
-    </button>
+    </div>
   );
 };
