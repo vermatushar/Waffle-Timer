@@ -145,10 +145,10 @@ async fn toggle_window_size(window: WebviewWindow, collapsed: bool) -> Result<()
         // Hide from taskbar when collapsed
         window.set_skip_taskbar(true).map_err(|e| e.to_string())?;
     } else {
-        // Expanded state - compact widget (360x480)
+        // Expanded state - compact widget (300x400)
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 360,
-            height: 480,
+            width: 300,
+            height: 400,
         })).map_err(|e| e.to_string())?;
         
         // Show in taskbar when expanded

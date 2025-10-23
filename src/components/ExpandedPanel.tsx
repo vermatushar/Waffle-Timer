@@ -14,24 +14,21 @@ export const ExpandedPanel: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center animate-fadeIn">
-      {/* Main Panel - Glass morphism effect */}
-      <div className="w-full h-full max-w-[360px] max-h-[480px] rounded-2xl overflow-hidden relative
-                      bg-gradient-to-br from-gray-900/30 to-gray-800/30
+    <div className="w-full h-full flex items-center justify-center animate-fadeIn drag-region">
+      {/* Main Panel - Darker Glass morphism effect */}
+      <div className="w-full h-full rounded-2xl overflow-hidden relative
+                      bg-gradient-to-br from-black/70 to-black/60
                       backdrop-blur-2xl backdrop-saturate-150
-                      border border-white/10
-                      shadow-[0_20px_70px_rgba(0,0,0,0.3)]
+                      border border-white/5
+                      shadow-[0_20px_70px_rgba(0,0,0,0.7)]
                       before:absolute before:inset-0 
-                      before:bg-gradient-to-br before:from-white/5 before:to-transparent
+                      before:bg-gradient-to-br before:from-white/[0.02] before:to-transparent
                       before:pointer-events-none">
         
-        {/* Invisible draggable header strip - 12px height */}
-        <div className="h-3 w-full absolute top-0 left-0 z-50 drag-region" />
-        
         {/* Content Container */}
-        <div className="h-full flex flex-col p-3 pt-4">
+        <div className="h-full flex flex-col p-2.5 pt-3 no-drag">
           {/* Todo Section - Top */}
-          <div className="flex-1 min-h-0 mb-2 overflow-hidden animate-slideUp">
+          <div className="flex-1 min-h-0 mb-1.5 overflow-hidden animate-slideUp">
             <TodoList 
               showStickyNote={showStickyNote}
               onToggleStickyNote={() => setShowStickyNote(!showStickyNote)}
@@ -41,13 +38,13 @@ export const ExpandedPanel: React.FC = () => {
           </div>
 
           {/* Timer Section - Compact */}
-          <div className="flex-shrink-0 mb-2 animate-slideUp animation-delay-100">
+          <div className="flex-shrink-0 mb-1 animate-slideUp animation-delay-100">
             <TimerCard />
           </div>
 
           {/* Footer Motto */}
-          <div className="text-center pb-1 animate-fadeIn animation-delay-200">
-            <p className="text-[10px] text-white/40 font-light">
+          <div className="text-center pb-0.5 animate-fadeIn animation-delay-200">
+            <p className="text-[9px] text-white/30 font-light">
               Stay focused, one waffle at a time xD
             </p>
           </div>

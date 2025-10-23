@@ -56,14 +56,20 @@
 @layer components {
   /* Drag regions */
   .drag-region {
-    -webkit-app-region: drag;
-    app-region: drag;
+    -webkit-app-region: drag !important;
+    app-region: drag !important;
     user-select: none;
   }
-
+  
   .no-drag {
-    -webkit-app-region: no-drag;
-    app-region: no-drag;
+    -webkit-app-region: no-drag !important;
+    app-region: no-drag !important;
+  }
+  
+  /* Ensure all interactive elements are not draggable */
+  button, input, textarea, select, a {
+    -webkit-app-region: no-drag !important;
+    app-region: no-drag !important;
   }
 
   /* Glass morphism backgrounds */
