@@ -12,26 +12,11 @@ const AMBIENT_TRACKS = [
 ];
 
 export const TimerCard: React.FC = () => {
-  const { duration, remaining, state, start, pause, reset, tick } = useTimerStore();
+  const { duration, remaining, state, start, pause, reset } = useTimerStore();
   const { muted, selectedMusic, toggleMute, setSelectedMusic } = useUiStore();
   const { toggleThinkTank } = useThinkTankStore();
   const [showMusicMenu, setShowMusicMenu] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    if (state === 'running') {
-      intervalRef.current = setInterval(tick, 100);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    }
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [state, tick]);
 
   useEffect(() => {
     // Handle ambient music

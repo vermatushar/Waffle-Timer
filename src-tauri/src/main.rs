@@ -136,19 +136,19 @@ async fn open_note_window(app: AppHandle) -> Result<(), String> {
 #[tauri::command]
 async fn toggle_window_size(window: WebviewWindow, collapsed: bool) -> Result<(), String> {
     if collapsed {
-        // Collapsed state - compact icon (60x60)
+        // Collapsed state - duck avatar with progress (110x110)
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 60,
-            height: 60,
+            width: 110,
+            height: 110,
         })).map_err(|e| e.to_string())?;
         
         // Hide from taskbar when collapsed
         window.set_skip_taskbar(true).map_err(|e| e.to_string())?;
     } else {
-        // Expanded state - compact widget (300x400)
+        // Expanded state - full timer widget (270x370)
         window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 300,
-            height: 400,
+            width: 270,
+            height: 370,
         })).map_err(|e| e.to_string())?;
         
         // Show in taskbar when expanded
